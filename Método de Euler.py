@@ -25,3 +25,26 @@ def metodo_euler(f, x0, y0, h, x_final):
 
     x = x0
     y = y0
+    # Bucle principal del método
+    for i in range(n_pasos):
+        # Aplicamos la fórmula de Euler:
+        # y_nuevo = y_actual + h * f(x_actual, y_actual)
+        y_nuevo = y + h * f(x, y)
+        
+        # Avanzamos al siguiente punto x
+        x = x + h
+
+        # Actualizamos 'y' para la siguiente iteración
+        y = y_nuevo
+
+        # Guardamos los resultados (redondeamos 'x' para evitar errores de flotante)
+        x_puntos.append(round(x, 5)) 
+        y_puntos.append(y)
+
+    return x_puntos, y_puntos
+
+# -----------------------------------------------------------------
+# --- CONFIGURACIÓN DEL PROBLEMA (BASADO EN EL VIDEO) ---
+# -----------------------------------------------------------------
+
+# 1. Definimos la EDO del video: y
