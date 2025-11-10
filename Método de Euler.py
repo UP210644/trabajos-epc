@@ -17,3 +17,11 @@ def metodo_euler(f, x0, y0, h, x_final):
                   valores aproximados de y.
     """
     
+    x_puntos = [x0]
+    y_puntos = [y0]
+
+    # Calculamos el número de pasos necesarios
+    n_pasos = int(round((x_final - x0) / h))
+
+    x = x0
+    y = y0
