@@ -30,3 +30,15 @@ class NewtonRaphsonCalculator:
 las raíces de una función real. Fórmula: xₙ₊₁ = xₙ - f(xₙ)/f'(xₙ)"""
         desc_label = ttk.Label(main_frame, text=desc_text, justify=tk.CENTER)
         desc_label.grid(row=1, column=0, columnspan=2, pady=(0, 20))
+
+        # Campo para la función
+        ttk.Label(main_frame, text="Función f(x):", font=("Arial", 11, "bold")).grid(
+            row=2, column=0, sticky=tk.W, pady=5)
+        
+        func_frame = ttk.Frame(main_frame)
+        func_frame.grid(row=3, column=0, columnspan=2, sticky=(tk.W, tk.E), pady=5)
+        
+        ttk.Label(func_frame, text="f(x) =").grid(row=0, column=0, padx=(0, 10))
+        self.func_entry = ttk.Entry(func_frame, width=40)
+        self.func_entry.grid(row=0, column=1, sticky=(tk.W, tk.E))
+        self.func_entry.insert(0, "x**3 - 2*x - 5")
