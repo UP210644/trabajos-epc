@@ -98,3 +98,66 @@ def get_user_input():
     # Al final, empaqueta todas tus respuestas y las devuelve.
     return f_func, g_func, x0, y0, h, x_final
 
+# --- 4. El "Motor de Cálculo" (Método de Euler) ---
+
+def metodo_euler(f, x0, y0, h, x_final):
+    """
+    Este es el "motor de cálculo". Hace todo el trabajo pesado de Euler
+    y te va mostrando la tabla de resultados.
+    """
+    
+    # Calcula cuántos "pasos" necesita dar para llegar del inicio al final.
+    n_pasos = int(round(abs(x_final - x0) / h))
+    
+    if n_pasos == 0 and x0 != x_final:
+        print("Error: El tamaño de paso 'h' es demasiado grande.")
+        return [], [] # Devuelve listas vacías
+        
+    # Prepara las "hojas" donde anotará los resultados de 'x' e 'y'.
+    x_valores = [0.0] * (n_pasos + 1)
+    y_valores = [0.0] * (n_pasos + 1)
+    
+    # Escribe el primer punto (tu punto de partida) en las hojas.
+    x_valores[0] = x0
+    y_valores[0] = y0
+    
+    # Dibuja la parte de arriba de la tabla de resultados.
+    print("\n--- Calculando con Método de Euler ---")
+    print("--------------------------------------")
+    print(f"| {'Paso':<4} | {'x':<10} | {'y (aprox)':<18} |")
+    print("--------------------------------------")
+    print(f"| {0:<4} | {x0:<10.4f} | {y0:<18.6f} |")
+
+    # Ahora, repite el cálculo para cada "paso" que necesita dar.
+    for i in range(n_pasos):
+        x_i = x_valores[i] # Mira dónde está parado actualmente en 'x'
+        y_i = y_valores[i] # Mira dónde está parado actualmente en 'y'
+        
+        # Esta es la fórmula mágica de Euler:
+        # y_nuevo = y_actual + (tamaño_paso * inclinación)
+        try:
+            # 1. Calcula la "inclinación" (pendiente) usando tu ecuación.
+            pendiente = f(x_i, y_i)
+        except (ValueError, ZeroDivisionError) as e:
+            # Si algo sale mal (ej. ¡dividir por cero!), se detiene de forma segura.
+            print(f"¡Error en el paso {i+1}! No se puede calcular f({x_i}, {y_i}). Detalle: {e}")
+            print("El cálculo se detendrá.")
+            return x_valores[:i+1], y_valores[:i+1] # Devuelve lo que alcanzó a calcular
+            
+        # 2. Calcula dónde estará el siguiente punto 'y'.
+        y_siguiente = y_i + h * pendiente 
+        
+        # 3. Anota los nuevos puntos 'x' e 'y' en las hojas.
+        # (Calculamos 'x' así para que no acumule errores de decimales)
+        x_valores[i+1] = x0 + (i + 1) * h 
+        y_valores[i+1] = y_siguiente
+        
+        # Escribe esta nueva fila de resultados en la pantalla.
+        print(f"| {i+1:<4} | {x_valores[i+1]:<10.4f} | {y_siguiente:<18.6f} |")
+        
+    print("--------------------------------------")
+    print("Cálculo completado.")
+    
+    # Cuando termina, entrega las "hojas" con todos los resultados.
+    return x_valores, y_valores
+
