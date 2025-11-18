@@ -1,5 +1,6 @@
-import math  # Para funciones matemáticas (sin, cos, sqrt, pi, etc.)
-import numpy as np  # Para cálculos numéricos y arrays (usado en la gráfica)
-import matplotlib.pyplot as plt  # Para crear las gráficas
-import sys  # Para permitir la salida del programa (ej. Ctrl+C)
+# --- 1. Importaciones" ---
 
+import math  # Trae la "calculadora científica" (para seno, coseno, raíz, pi, etc.)
+import numpy as np  # Trae una "calculadora avanzada" para listas (la usaremos para la gráfica)
+import matplotlib.pyplot as plt  # Trae el "equipo de dibujo" (para hacer la gráfica)
+import sys  # Trae el "interruptor de emergencia" (para poder parar el programa con Ctrl+C)
