@@ -161,3 +161,20 @@ def metodo_euler(f, x0, y0, h, x_final):
     # Cuando termina, entrega las "hojas" con todos los resultados.
     return x_valores, y_valores
 
+# --- 5. El "Artista" (Dibujante de Gráficas) ---
+
+def plot_results(x_euler, y_euler, g_func, x0, x_final, h):
+    """
+    Este es el "artista". Toma los resultados del "motor de cálculo"
+    y los dibuja en una gráfica bonita.
+    """
+    if not x_euler: # Si no hay nada que dibujar (porque hubo un error antes)
+        print("No hay datos para dibujar.")
+        return
+
+    # Saca un "lienzo" en blanco para dibujar.
+    plt.figure(figsize=(10, 6))
+    
+    # 1. Dibuja la solución de Euler (la aproximada)
+    # 'bo--' significa: 'b' (azul), 'o' (puntos), '--' (línea discontinua).
+    plt.plot(x_euler, y_euler, 'bo--', label=f'Solución de Euler (h={h})
