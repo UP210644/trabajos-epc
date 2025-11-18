@@ -1,4 +1,4 @@
-# --- 1. Importaciones" ---
+# --- 1. Importaciones ---
 
 import math  # Trae la "calculadora científica" (para seno, coseno, raíz, pi, etc.)
 import numpy as np  # Trae una "calculadora avanzada" para listas (la usaremos para la gráfica)
@@ -177,4 +177,77 @@ def plot_results(x_euler, y_euler, g_func, x0, x_final, h):
     
     # 1. Dibuja la solución de Euler (la aproximada)
     # 'bo--' significa: 'b' (azul), 'o' (puntos), '--' (línea discontinua).
-    plt.plot(x_euler, y_euler, 'bo--', label=f'Solución de Euler (h={h})
+    plt.plot(x_euler, y_euler, 'bo--', label=f'Solución de Euler (h={h})')
+    
+    # 2. Si hay una solución "real" (analítica), también la dibuja para comparar
+    if g_func is not None:
+        # Crea muchos puntos entre x0 y x_final para que la curva se vea suave.
+        x_analitica = np.linspace(x0, x_final, 1000)
+        try:
+            # Calcula la solución "real" para todos esos puntos.
+            y_analitica = [g_func(x) for x in x_analitica]
+            # La dibuja con una línea roja continua.
+            plt.plot(x_analitica, y_analitica, 'r-', label='Solución analítica')
+        except Exception as e:
+            print(f"Error al dibujar la solución analítica: {e}")
+    
+    # 3. Le pone títulos y etiquetas a la gráfica
+    plt.xlabel('x')
+    plt.ylabel('y')
+    plt.title('Comparación: Método de Euler vs Solución Analítica')
+    plt.legend() # Muestra la "leyenda" (qué color es qué línea)
+    plt.grid(True) # Pone una "rejilla" para que sea más fácil leer los valores
+    
+    # 4. Muestra la gráfica en pantalla
+    plt.show()
+
+# --- 6. La Función "Jefe" (Main) ---
+
+def main():
+    """
+    Esta es la función "jefe". Coordina a todas las demás funciones
+    para resolver el problema completo.
+    """
+    try:
+        # 1. El "entrevistador" habla contigo y reúne los datos
+        f_func, g_func, x0, y0, h, x_final = get_user_input()
+        
+        # 2. El "motor de cálculo" hace todo el trabajo pesado
+        x_euler, y_euler = metodo_euler(f_func, x0, y0, h, x_final)
+        
+        # 3. El "artista" dibuja los resultados
+        if x_euler:  # Solo si hay resultados que dibujar
+            plot_results(x_euler, y_euler, g_func, x0, x_final, h)
+        
+        # 4. Muestra un resumen final
+        print("\n--- Resumen Final ---")
+        print(f"Punto inicial: ({x0}, {y0})")
+        print(f"Punto final calculado: ({x_euler[-1]:.4f}, {y_euler[-1]:.6f})" if x_euler else "No se pudo calcular")
+        print(f"Tamaño de paso usado: {h}")
+        print(f"Número de pasos: {len(x_euler)-1 if x_euler else 0}")
+        
+        if g_func is not None and x_euler:
+            try:
+                # Si hay solución "real", calcula qué tan cerca estuvimos
+                y_real = g_func(x_euler[-1])
+                error = abs(y_euler[-1] - y_real)
+                print(f"Valor real en x_final: {y_real:.6f}")
+                print(f"Error absoluto: {error:.6f}")
+            except Exception as e:
+                print(f"No se pudo calcular el error: {e}")
+        
+    except KeyboardInterrupt:
+        # Si presionas Ctrl+C, el programa se detiene elegantemente
+        print("\n\nPrograma interrumpido por el usuario. ¡Hasta luego!")
+    except Exception as e:
+        # Si algo sale muy mal, muestra el error en lugar de que el programa "explote"
+        print(f"\nOcurrió un error inesperado: {e}")
+        print("Por favor, revisa tus datos e intenta de nuevo.")
+
+# --- 7. El "Punto de Inicio" ---
+
+if __name__ == "__main__":
+    # Esto significa: "Si alguien ejecuta este archivo directamente 
+    # (no lo está usando como una 'pieza' de otro programa), 
+    # entonces ejecuta la función main()."
+    main()
