@@ -47,3 +47,54 @@ def create_function(expr_str, var_names):
         print(f"Revisa si está bien escrita (ej. 'x**2', 'math.sin(y)').\n")
         return None # Devuelve "nada" para que el programa sepa que falló.
 
+# --- 3. Las Funciones del "Entrevistador" ---
+
+def get_numerical_input(prompt):
+    """
+    Esta función es un "portero". Pide un número y no te deja pasar 
+    hasta que escribas un número válido.
+    """
+    while True: # Se queda preguntando una y otra vez...
+        try:
+            # Intenta convertir tu respuesta en un número (con decimales).
+            return float(input(prompt))
+        except ValueError:
+            # Si escribes "hola" en lugar de "5", te dice "inválido" y vuelve a preguntar.
+            print("Eso no es un número. Intenta de nuevo.")
+
+def get_user_input():
+    """
+    Esta función es el "entrevistador". Habla contigo y reúne
+    todos los datos necesarios para resolver el problema.
+    """
+    
+    # Imprime el mensaje de bienvenida
+    print("="*50)
+    print("  SOLUCIONADOR DE EDOs POR MÉTODO DE EULER  ")
+    print("="*50)
+    print("Puedes usar funciones como: math.sin, math.cos, math.sqrt, math.pi, etc.")
+    print("Recuerda que 'potencia' se escribe con ** (ej. x**2).\n")
+
+    # 1. Pregunta por la ecuación (la EDO)
+    f_func = None
+    while f_func is None: # Repite la pregunta hasta que la fórmula esté bien escrita
+        f_str = input("Introduce la EDO dy/dx = f(x, y): ")
+        f_func = create_function(f_str, ['x', 'y']) # Llama al "traductor"
+        
+    # 2. Pregunta por los números iniciales
+    x0 = get_numerical_input("Introduce el valor inicial x0:      ")
+    y0 = get_numerical_input("Introduce el valor inicial y0 (y(x0)): ")
+    h = get_numerical_input("Introduce el tamaño de paso (h):     ")
+    x_final = get_numerical_input("Introduce el valor final de x:       ")
+    
+    # 3. Pregunta (opcional) por la respuesta "real"
+    g_func = None
+    has_analitica = input("\n¿Tienes la solución 'real' (analítica) para comparar? (s/n): ").lower().strip()
+    if has_analitica == 's':
+        while g_func is None: # Repite hasta que la fórmula esté bien escrita
+            g_str = input("Introduce la solución g(x) =       ")
+            g_func = create_function(g_str, ['x']) # Llama al "traductor"
+    
+    # Al final, empaqueta todas tus respuestas y las devuelve.
+    return f_func, g_func, x0, y0, h, x_final
+
