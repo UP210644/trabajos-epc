@@ -338,9 +338,7 @@ def ejemplo_newton_raphson():
 
 
 if __name__ == "__main__":
-    # Instalar dependencias necesarias:
-    # pip install numpy matplotlib sympy
-
+    
     print("Método de Newton-Raphson")
     print("=" * 30)
 
