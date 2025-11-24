@@ -71,3 +71,14 @@ las raíces de una función real. Fórmula: xₙ₊₁ = xₙ - f(xₙ)/f'(xₙ)
         self.tol_entry = ttk.Entry(params_frame, width=15)
         self.tol_entry.grid(row=1, column=1, sticky=tk.W, pady=5)
         self.tol_entry.insert(0, "1e-6")
+
+        # Máximo de iteraciones
+        ttk.Label(params_frame, text="Máx iteraciones:").grid(
+            row=2, column=0, sticky=tk.W, pady=5)
+        self.max_iter_entry = ttk.Entry(params_frame, width=15)
+        self.max_iter_entry.grid(row=2, column=1, sticky=tk.W, pady=5)
+        self.max_iter_entry.insert(0, "100")
+        
+        # Botones
+        button_frame = ttk.Frame(main_frame)
+        button_frame.grid(row=7, column=0, columnspan=2, pady=20)
