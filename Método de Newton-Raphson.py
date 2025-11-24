@@ -107,3 +107,75 @@ las raíces de una función real. Fórmula: xₙ₊₁ = xₙ - f(xₙ)/f'(xₙ)
         
         self.results_text.grid(row=0, column=0, sticky=(tk.W, tk.E, tk.N, tk.S))
         scrollbar.grid(row=0, column=1, sticky=(tk.N, tk.S))
+
+         # Configurar grid weights
+        self.root.columnconfigure(0, weight=1)
+        self.root.rowconfigure(0, weight=1)
+        main_frame.columnconfigure(0, weight=1)
+        main_frame.rowconfigure(8, weight=1)
+        func_frame.columnconfigure(1, weight=1)
+        params_frame.columnconfigure(1, weight=1)
+        results_frame.columnconfigure(0, weight=1)
+        results_frame.rowconfigure(0, weight=1)
+
+        def parse_function(self, func_str):
+        """Convierte string de función a función evaluable"""
+        try:
+            # Reemplazar notaciones comunes
+            func_str = func_str.replace('^', '**')
+            func_str = func_str.replace('e', 'E')  # Evitar confusión con e como variable
+            
+            # Crear expresión simbólica
+            expr = sp.sympify(func_str)
+            
+            # Crear funciones numéricas
+            f = lambdify(self.x, expr, modules=['numpy', 'math'])
+            f_prime = lambdify(self.x, diff(expr, self.x), modules=['numpy', 'math'])
+            
+            return f, f_prime, expr
+            
+            except Exception as e:
+            raise ValueError(f"Error en la función: {str(e)}")
+    
+    def newton_raphson(self, f, f_prime, x0, tol=1e-6, max_iter=100):
+        """Implementa el método de Newton-Raphson"""
+        iterations = []
+        x = x0
+        
+        for i in range(max_iter):
+            fx = f(x)
+            fpx = f_prime(x)
+            
+            # Evitar división por cero
+            if abs(fpx) < 1e-12:
+                raise ValueError("Derivada cercana a cero. El método puede no converger.")
+            
+             # Calcular siguiente iteración
+            x_new = x - fx / fpx
+            error = abs(x_new - x)
+            
+            iterations.append({
+                'iteracion': i + 1,
+                'x': x,
+                'f(x)': fx,
+                'f\'(x)': fpx,
+                'x_new': x_new,
+                'error': error
+            })
+            
+            # Verificar convergencia
+            if error < tol:
+                break
+
+            x = x_new
+
+             return x_new, iterations
+    
+    def calculate_root(self):
+        """Calcula la raíz usando Newton-Raphson"""
+        try:
+            # Obtener parámetros
+            func_str = self.func_entry.get()
+            x0 = float(self.x0_entry.get())
+            tol = float(self.tol_entry.get())
+            max_iter = int(self.max_iter_entry.get())
