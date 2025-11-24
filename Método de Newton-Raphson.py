@@ -42,3 +42,14 @@ las raíces de una función real. Fórmula: xₙ₊₁ = xₙ - f(xₙ)/f'(xₙ)
         self.func_entry = ttk.Entry(func_frame, width=40)
         self.func_entry.grid(row=0, column=1, sticky=(tk.W, tk.E))
         self.func_entry.insert(0, "x**3 - 2*x - 5")
+
+         # Ejemplos de funciones
+        examples = [
+            "Ejemplos: x**2 - 4, exp(x) - 2, cos(x) - x, x**3 - 2*x - 5",
+            "Usar: exp() para eˣ, log() para ln(x), sin(), cos(), tan()"
+        ]
+        
+        for i, example in enumerate(examples):
+            example_label = ttk.Label(main_frame, text=example, 
+                                    font=("Arial", 9), foreground="gray")
+            example_label.grid(row=4+i, column=0, columnspan=2, sticky=tk.W, pady=2)
