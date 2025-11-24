@@ -179,3 +179,171 @@ las raíces de una función real. Fórmula: xₙ₊₁ = xₙ - f(xₙ)/f'(xₙ)
             x0 = float(self.x0_entry.get())
             tol = float(self.tol_entry.get())
             max_iter = int(self.max_iter_entry.get())
+
+            # Parsear función
+            f, f_prime, expr = self.parse_function(func_str)
+            
+            # Calcular derivada simbólica para mostrar
+            derivada = diff(expr, self.x)
+            
+            # Ejecutar método
+            raiz, iteraciones = self.newton_raphson(f, f_prime, x0, tol, max_iter)
+            
+            # Mostrar resultados
+            self.mostrar_resultados(expr, derivada, raiz, iteraciones)
+            
+        except Exception as e:
+            messagebox.showerror("Error", f"Error en el cálculo: {str(e)}")
+
+            def mostrar_resultados(self, expr, derivada, raiz, iteraciones):
+        """Muestra los resultados en el área de texto"""
+        self.results_text.delete(1.0, tk.END)
+        
+        # Información general
+        self.results_text.insert(tk.END, "MÉTODO DE NEWTON-RAPHSON\n")
+        self.results_text.insert(tk.END, "=" * 50 + "\n\n")
+        
+        self.results_text.insert(tk.END, f"Función: f(x) = {expr}\n")
+        self.results_text.insert(tk.END, f"Derivada: f'(x) = {derivada}\n\n")
+        
+        # Tabla de iteraciones
+        self.results_text.insert(tk.END, "ITERACIONES:\n")
+        self.results_text.insert(tk.END, "-" * 80 + "\n")
+        self.results_text.insert(tk.END, 
+            f"{'Iter':<6} {'xₙ':<12} {'f(xₙ)':<12} {'f'(xₙ)':<12} {'xₙ₊₁':<12} {'Error':<12}\n")
+        self.results_text.insert(tk.END, "-" * 80 + "\n")
+
+         for it in iteraciones:
+            self.results_text.insert(tk.END, 
+                f"{it['iteracion']:<6} {it['x']:<12.6f} {it['f(x)']:<12.6f} "
+                f"{it['f\'(x)']:<12.6f} {it['x_new']:<12.6f} {it['error']:<12.2e}\n")
+        
+        # Resultado final
+        self.results_text.insert(tk.END, "-" * 80 + "\n\n")
+        self.results_text.insert(tk.END, f"RAÍZ ENCONTRADA: x = {raiz:.8f}\n")
+        self.results_text.insert(tk.END, f"f({raiz:.8f}) = {iteraciones[-1]['f(x)']:.2e}\n")
+        self.results_text.insert(tk.END, f"Iteraciones realizadas: {len(iteraciones)}\n")
+
+         def plot_function(self):
+        """Grafica la función y el proceso de Newton-Raphson"""
+        try:
+            func_str = self.func_entry.get()
+            x0 = float(self.x0_entry.get())
+            
+            f, f_prime, expr = self.parse_function(func_str)
+            
+            # Calcular para obtener iteraciones
+            raiz, iteraciones = self.newton_raphson(f, f_prime, x0)
+            
+            # Crear gráfico
+            fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 5))
+            
+            # Gráfico 1: Función y raíz
+            x_vals = np.linspace(raiz - 3, rai
+            z + 3, 400)
+            y_vals = [f(x) for x in x_vals]
+
+            ax1.plot(x_vals, y_vals, 'b-', linewidth=2, label=f'f(x) = {expr}')
+            ax1.axhline(y=0, color='k', linestyle='--', alpha=0.3)
+            ax1.axvline(x=raiz, color='r', linestyle='--', alpha=0.7, label=f'Raíz: {raiz:.6f}')
+            ax1.plot(raiz, f(raiz), 'ro', markersize=8, label='Raíz encontrada')
+            ax1.set_xlabel('x')
+            ax1.set_ylabel('f(x)')
+            ax1.set_title('Función y Raíz Encontrada')
+            ax1.legend()
+            ax1.grid(True, alpha=0.3)
+            
+            # Gráfico 2: Convergencia del error
+            errores = [it['error'] for it in iteraciones]
+            iter_nums = [it['iteracion'] for it in iteraciones]
+            
+            ax2.semilogy(iter_nums, errores, 'go-', linewidth=2, markersize=6)
+            ax2.set_xlabel('Iteración')
+            ax2.set_ylabel('Error (escala log)')
+            ax2.set_title('Convergencia del Error')
+            ax2.grid(True, alpha=0.3)
+            
+            plt.tight_layout()
+            plt.show()
+            
+        except Exception as e:
+            messagebox.showerror("Error", f"Error al graficar: {str(e)}")
+    
+    def clear_fields(self):
+        """Limpia todos los campos"""
+        self.func_entry.delete(0, tk.END)
+        self.func_entry.insert(0, "x**3 - 2*x - 5")
+        self.x0_entry.delete(0, tk.END)
+        self.x0_entry.insert(0, "2.0")
+        self.tol_entry.delete(0, tk.END)
+        self.tol_entry.insert(0, "1e-6")
+        self.max_iter_entry.delete(0, tk.END)
+        self.max_iter_entry.insert(0, "100")
+        self.results_text.delete(1.0, tk.END)
+    
+    def run(self):
+        self.root.mainloop()
+
+# Ejemplos de uso directo (sin interfaz gráfica)
+def ejemplo_newton_raphson():
+    """Ejemplo básico del método Newton-Raphson"""
+    print("EJEMPLO MÉTODO NEWTON-RAPHSON")
+    print("=" * 40)
+    
+    # Definir función y su derivada
+    def f(x):
+        return x**3 - 2*x - 5
+    
+    def f_prime(x):
+        return 3*x**2 - 2
+    
+    # Parámetros
+    x0 = 2.0
+    tol = 1e-6
+    max_iter = 100
+    
+    print(f"Función: f(x) = x³ - 2x - 5")
+    print(f"Derivada: f'(x) = 3x² - 2")
+    print(f"Valor inicial: x0 = {x0}")
+    print(f"Tolerancia: {tol}")
+    print(f"Máximo de iteraciones: {max_iter}")
+    print("\nIteraciones:")
+    print("-" * 70)
+    print(f"{'Iter':<4} {'xₙ':<12} {'f(xₙ)':<12} {'f'(xₙ)':<12} {'xₙ₊₁':<12} {'Error':<12}")
+    print("-" * 70)
+    
+    x = x0
+    for i in range(max_iter):
+        fx = f(x)
+        fpx = f_prime(x)
+        x_new = x - fx / fpx
+        error = abs(x_new - x)
+        
+        print(f"{i+1:<4} {x:<12.6f} {fx:<12.6f} {fpx:<12.6f} {x_new:<12.6f} {error:<12.2e}")
+        
+        if error < tol:
+            break
+        
+        x = x_new
+    
+    print("-" * 70)
+    print(f"\nRaíz encontrada: x = {x_new:.8f}")
+    print(f"f({x_new:.8f}) = {f(x_new):.2e}")
+    print(f"Iteraciones realizadas: {i+1}")
+
+if __name__ == "__main__":
+    # Instalar dependencias necesarias:
+    # pip install numpy matplotlib sympy
+    
+    print("Método de Newton-Raphson")
+    print("=" * 30)
+    
+    # Ejecutar ejemplo básico
+    ejemplo_newton_raphson()
+    
+    print("\n" + "=" * 50)
+    print("Iniciando interfaz gráfica...")
+    
+    # Ejecutar interfaz gráfica
+    app = NewtonRaphsonCalculator()
+    app.run()
