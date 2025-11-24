@@ -94,3 +94,16 @@ las raíces de una función real. Fórmula: xₙ₊₁ = xₙ - f(xₙ)/f'(xₙ)
         clear_btn = ttk.Button(button_frame, text="Limpiar", 
                               command=self.clear_fields)
         clear_btn.grid(row=0, column=2, padx=10)
+
+        # Área de resultados
+        results_frame = ttk.LabelFrame(main_frame, text="Resultados", padding="10")
+        results_frame.grid(row=8, column=0, columnspan=2, sticky=(tk.W, tk.E, tk.N, tk.S), pady=10)
+        
+        # Text widget para resultados
+        self.results_text = tk.Text(results_frame, height=12, width=70)
+        scrollbar = ttk.Scrollbar(results_frame, orient="vertical", 
+                                 command=self.results_text.yview)
+        self.results_text.configure(yscrollcommand=scrollbar.set)
+        
+        self.results_text.grid(row=0, column=0, sticky=(tk.W, tk.E, tk.N, tk.S))
+        scrollbar.grid(row=0, column=1, sticky=(tk.N, tk.S))
