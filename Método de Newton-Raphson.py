@@ -53,3 +53,21 @@ las raíces de una función real. Fórmula: xₙ₊₁ = xₙ - f(xₙ)/f'(xₙ)
             example_label = ttk.Label(main_frame, text=example, 
                                     font=("Arial", 9), foreground="gray")
             example_label.grid(row=4+i, column=0, columnspan=2, sticky=tk.W, pady=2)
+
+            # Parámetros
+        params_frame = ttk.LabelFrame(main_frame, text="Parámetros", padding="10")
+        params_frame.grid(row=6, column=0, columnspan=2, sticky=(tk.W, tk.E), pady=10)
+        
+        # Valor inicial
+        ttk.Label(params_frame, text="Valor inicial (x₀):").grid(
+            row=0, column=0, sticky=tk.W, pady=5)
+        self.x0_entry = ttk.Entry(params_frame, width=15)
+        self.x0_entry.grid(row=0, column=1, sticky=tk.W, pady=5)
+        self.x0_entry.insert(0, "2.0")
+        
+        # Tolerancia
+        ttk.Label(params_frame, text="Tolerancia:").grid(
+            row=1, column=0, sticky=tk.W, pady=5)
+        self.tol_entry = ttk.Entry(params_frame, width=15)
+        self.tol_entry.grid(row=1, column=1, sticky=tk.W, pady=5)
+        self.tol_entry.insert(0, "1e-6")
