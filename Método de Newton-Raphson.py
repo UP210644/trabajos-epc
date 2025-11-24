@@ -82,3 +82,15 @@ las raíces de una función real. Fórmula: xₙ₊₁ = xₙ - f(xₙ)/f'(xₙ)
         # Botones
         button_frame = ttk.Frame(main_frame)
         button_frame.grid(row=7, column=0, columnspan=2, pady=20)
+
+        calc_btn = ttk.Button(button_frame, text="Calcular Raíz", 
+                             command=self.calculate_root)
+        calc_btn.grid(row=0, column=0, padx=10)
+        
+        graph_btn = ttk.Button(button_frame, text="Graficar Función", 
+                              command=self.plot_function)
+        graph_btn.grid(row=0, column=1, padx=10)
+        
+        clear_btn = ttk.Button(button_frame, text="Limpiar", 
+                              command=self.clear_fields)
+        clear_btn.grid(row=0, column=2, padx=10)
