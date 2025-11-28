@@ -1,225 +1,230 @@
-# --- 1. Importaciones ---
+# --- 1. Librerías necesarias ---
+# Estas son herramientas que necesitamos para que el programa funcione
 
-import math  # Trae la "calculadora científica" (para seno, coseno, raíz, pi, etc.)
-import numpy as np  # Trae una "calculadora avanzada" para listas (la usaremos para la gráfica)
-import matplotlib.pyplot as plt  # Trae el "equipo de dibujo" (para hacer la gráfica)
-import sys  # Trae el "interruptor de emergencia" (para poder parar el programa con Ctrl+C)
+import math  # Contiene funciones matemáticas como seno, coseno, raíz cuadrada, etc.
+import numpy as np  # Nos ayuda a trabajar con listas de números de manera eficiente
+import matplotlib.pyplot as plt  # Nos permite crear gráficas para visualizar los resultados
+import sys  # Nos da herramientas del sistema, como poder parar el programa
 
 
-# --- 2. El "Traductor de Ecuaciones" Seguro ---
+# --- 2. Conversor seguro de ecuaciones ---
+# Esta sección convierte las fórmulas que escribes en funciones que la computadora puede usar
 
-# Esta es la "lista de invitados" de las matemáticas que permitimos.
-# Es una medida de seguridad para que el programa solo pueda "hablar" de matemáticas.
+# Creamos una lista de operaciones matemáticas permitidas para mantener seguridad
+# Solo permitimos cálculos matemáticos, nada que pueda dañar el sistema
 ALLOWED_FUNCTIONS = {
     k: v for k, v in math.__dict__.items() if not k.startswith('_')
 }
-ALLOWED_FUNCTIONS['abs'] = abs  # Permitimos el valor absoluto
-ALLOWED_FUNCTIONS['pow'] = pow  # Permitimos las potencias
+ALLOWED_FUNCTIONS['abs'] = abs  # Añadimos la función de valor absoluto
+ALLOWED_FUNCTIONS['pow'] = pow  # Añadimos la función de potencias
 
 def create_function(expr_str, var_names):
     """
-    Toma un texto (ej. "x**2") y lo convierte en una orden matemática
-    real que la computadora entiende (una "función").
+    Convierte un texto como "x**2" en una función que la computadora puede usar.
+    Es como crear una calculadora personalizada según la fórmula que escribiste.
     """
     try:
-        # "Intenta" hacer lo siguiente:
+        # Intentamos crear la función paso a paso
         
-        # Aquí "traducimos" el texto a una función.
-        # Lo hacemos en una "habitación segura":
-        #  {"__builtins__": {}} -> Le quitamos todos los "juguetes" peligrosos de Python.
-        #  ALLOWED_FUNCTIONS  -> Le damos solo la "lista de invitados" de matemáticas.
+        # Convertimos tu texto en una función matemática real
+        # Usamos medidas de seguridad para evitar comandos peligrosos:
+        # - Bloqueamos acceso a funciones del sistema que podrían ser peligrosas
+        # - Solo permitimos las operaciones matemáticas de nuestra lista segura
         func = eval(
             f"lambda {','.join(var_names)}: {expr_str}",
             {"__builtins__": {}},
             ALLOWED_FUNCTIONS
         )
         
-        # Hacemos una prueba rápida (con x=1, y=1) para ver si la fórmula está bien escrita.
+        # Probamos la función con números sencillos para verificar que funciona
+        # Es como probar una máquina nueva antes de usarla en serio
         test_args = [1] * len(var_names)
         func(*test_args)
         
-        # Si todo salió bien, devolvemos la función lista para usarse.
+        # Si llegamos aquí, la función se creó correctamente
         return func
         
     except Exception as e:
-        # Si la "traducción" falla (ej. falta un paréntesis), atrapa el error aquí.
-        print(f"\n--- ERROR: No entendí esa fórmula: '{expr_str}' ---")
-        print(f"Revisa si está bien escrita (ej. 'x**2', 'math.sin(y)').\n")
-        return None # Devuelve "nada" para que el programa sepa que falló.
+        # Si hubo algún error en la fórmula, informamos al usuario qué salió mal
+        print(f"\n--- ERROR: No pude entender esta fórmula: '{expr_str}' ---")
+        print(f"Revisa que esté bien escrita. Ejemplos: 'x**2', 'math.sin(y)', 'x*y + 5'\n")
+        return None # Devolvemos 'nada' para indicar que falló
 
-# --- 3. Las Funciones del "Entrevistador" ---
+# --- 3. Funciones para obtener datos del usuario ---
 
 def get_numerical_input(prompt):
     """
-    Esta función es un "portero". Pide un número y no te deja pasar 
-    hasta que escribas un número válido.
+    Pide un número al usuario y verifica que sea válido.
+    Si el usuario escribe algo que no es un número, le pide que lo intente de nuevo.
+    No se detiene hasta recibir un número correcto.
     """
-    while True: # Se queda preguntando una y otra vez...
+    while True: # Repite hasta conseguir un número válido
         try:
-            # Intenta convertir tu respuesta en un número (con decimales).
+            # Intenta convertir la respuesta del usuario en un número decimal
             return float(input(prompt))
         except ValueError:
-            # Si escribes "hola" en lugar de "5", te dice "inválido" y vuelve a preguntar.
-            print("Eso no es un número. Intenta de nuevo.")
+            # Si la conversión falla (porque escribió letras), pide intentar otra vez
+            print("Por favor ingresa un número válido (ejemplo: 5, 3.14, -2.5)")
 
 def get_user_input():
     """
-    Esta función es el "entrevistador". Habla contigo y reúne
-    todos los datos necesarios para resolver el problema.
+    Recopila toda la información necesaria del usuario para resolver el problema.
+    Hace todas las preguntas necesarias y verifica que las respuestas sean válidas.
     """
     
-    # Imprime el mensaje de bienvenida
+    # Muestra el título y las instrucciones al usuario
     print("="*50)
-    print("  SOLUCIONADOR DE EDOs POR MÉTODO DE EULER  ")
+    print("  SOLUCIONADOR DE ECUACIONES DIFERENCIALES  ")
     print("="*50)
     print("Puedes usar funciones como: math.sin, math.cos, math.sqrt, math.pi, etc.")
-    print("Recuerda que 'potencia' se escribe con ** (ej. x**2).\n")
+    print("Para potencias usa **: por ejemplo x**2 significa x al cuadrado\n")
 
-    # 1. Pregunta por la ecuación (la EDO)
+    # 1. Obtiene la ecuación diferencial del usuario
+    # Esta ecuación describe cómo cambia y con respecto a x
     f_func = None
-    while f_func is None: # Repite la pregunta hasta que la fórmula esté bien escrita
+    while f_func is None: # Continúa preguntando hasta que la ecuación sea válida
         f_str = input("Introduce la EDO dy/dx = f(x, y): ")
-        f_func = create_function(f_str, ['x', 'y']) # Llama al "traductor"
+        f_func = create_function(f_str, ['x', 'y']) # Convierte el texto en función
         
-    # 2. Pregunta por los números iniciales
+    # 2. Obtiene las condiciones iniciales y parámetros del método
     x0 = get_numerical_input("Introduce el valor inicial x0:      ")
     y0 = get_numerical_input("Introduce el valor inicial y0 (y(x0)): ")
     h = get_numerical_input("Introduce el tamaño de paso (h):     ")
     x_final = get_numerical_input("Introduce el valor final de x:       ")
     
-    # 3. Pregunta (opcional) por la respuesta "real"
+    # 3. Pregunta si el usuario conoce la solución exacta para hacer comparaciones
     g_func = None
     has_analitica = input("\n¿Tienes la solución 'real' (analítica) para comparar? (s/n): ").lower().strip()
     if has_analitica == 's':
-        while g_func is None: # Repite hasta que la fórmula esté bien escrita
+        while g_func is None: # Continúa hasta que la solución sea válida
             g_str = input("Introduce la solución g(x) =       ")
-            g_func = create_function(g_str, ['x']) # Llama al "traductor"
+            g_func = create_function(g_str, ['x']) # Convierte el texto en función
     
-    # Al final, empaqueta todas tus respuestas y las devuelve.
+    # Devuelve todos los datos recopilados para que el programa los use
     return f_func, g_func, x0, y0, h, x_final
 
-# --- 4. El "Motor de Cálculo" (Método de Euler) ---
+# --- 4. Implementación del Método de Euler ---
 
 def metodo_euler(f, x0, y0, h, x_final):
     """
-    Este es el "motor de cálculo". Hace todo el trabajo pesado de Euler
-    y te va mostrando la tabla de resultados.
+    Implementa el método numérico de Euler para resolver la ecuación diferencial.
+    Calcula paso a paso los valores aproximados y muestra una tabla con los resultados.
     """
     
-    # Calcula cuántos "pasos" necesita dar para llegar del inicio al final.
+    # Calcula cuántos pasos necesitamos para llegar desde x0 hasta x_final
     n_pasos = int(round(abs(x_final - x0) / h))
     
     if n_pasos == 0 and x0 != x_final:
         print("Error: El tamaño de paso 'h' es demasiado grande.")
-        return [], [] # Devuelve listas vacías
+        return [], [] # Devuelve listas vacías para indicar error
         
-    # Prepara las "hojas" donde anotará los resultados de 'x' e 'y'.
+    # Crea listas para guardar todos los valores de x e y que vamos calculando
     x_valores = [0.0] * (n_pasos + 1)
     y_valores = [0.0] * (n_pasos + 1)
     
-    # Escribe el primer punto (tu punto de partida) en las hojas.
+    # Guarda el punto inicial (el punto de partida que nos dio el usuario)
     x_valores[0] = x0
     y_valores[0] = y0
     
-    # Dibuja la parte de arriba de la tabla de resultados.
+    # Muestra el encabezado de la tabla donde veremos todos los resultados
     print("\n--- Calculando con Método de Euler ---")
     print("--------------------------------------")
     print(f"| {'Paso':<4} | {'x':<10} | {'y (aprox)':<18} |")
     print("--------------------------------------")
     print(f"| {0:<4} | {x0:<10.4f} | {y0:<18.6f} |")
 
-    # Ahora, repite el cálculo para cada "paso" que necesita dar.
+    # Aplicamos la fórmula de Euler para cada paso
     for i in range(n_pasos):
-        x_i = x_valores[i] # Mira dónde está parado actualmente en 'x'
-        y_i = y_valores[i] # Mira dónde está parado actualmente en 'y'
+        x_i = x_valores[i] # Valor actual de x
+        y_i = y_valores[i] # Valor actual de y
         
-        # Esta es la fórmula mágica de Euler:
-        # y_nuevo = y_actual + (tamaño_paso * inclinación)
+        # Fórmula de Euler: y_nuevo = y_actual + h * f(x_actual, y_actual)
+        # donde f(x,y) es nuestra ecuación diferencial
         try:
-            # 1. Calcula la "inclinación" (pendiente) usando tu ecuación.
+            # 1. Calcula la pendiente (derivada) en el punto actual usando nuestra ecuación
             pendiente = f(x_i, y_i)
         except (ValueError, ZeroDivisionError) as e:
-            # Si algo sale mal (ej. ¡dividir por cero!), se detiene de forma segura.
+            # Si hay un error matemático (como dividir por cero), para el cálculo
             print(f"¡Error en el paso {i+1}! No se puede calcular f({x_i}, {y_i}). Detalle: {e}")
             print("El cálculo se detendrá.")
-            return x_valores[:i+1], y_valores[:i+1] # Devuelve lo que alcanzó a calcular
+            return x_valores[:i+1], y_valores[:i+1] # Devuelve lo que calculó hasta ahora
             
-        # 2. Calcula dónde estará el siguiente punto 'y'.
+        # 2. Calcula el siguiente valor de y usando la fórmula de Euler
         y_siguiente = y_i + h * pendiente 
         
-        # 3. Anota los nuevos puntos 'x' e 'y' en las hojas.
-        # (Calculamos 'x' así para que no acumule errores de decimales)
+        # 3. Guarda los nuevos valores en nuestras listas
+        # Calculamos x de esta forma para evitar errores de redondeo acumulados
         x_valores[i+1] = x0 + (i + 1) * h 
         y_valores[i+1] = y_siguiente
         
-        # Escribe esta nueva fila de resultados en la pantalla.
+        # Muestra esta fila en la tabla de resultados
         print(f"| {i+1:<4} | {x_valores[i+1]:<10.4f} | {y_siguiente:<18.6f} |")
         
     print("--------------------------------------")
     print("Cálculo completado.")
     
-    # Cuando termina, entrega las "hojas" con todos los resultados.
+    # Devuelve todas las listas con los valores calculados
     return x_valores, y_valores
 
-# --- 5. El "Artista" (Dibujante de Gráficas) ---
+# --- 5. Generador de gráficas ---
 
 def plot_results(x_euler, y_euler, g_func, x0, x_final, h):
     """
-    Este es el "artista". Toma los resultados del "motor de cálculo"
-    y los dibuja en una gráfica bonita.
+    Crea una gráfica que muestra los resultados del método de Euler.
+    Si hay una solución analítica, también la dibuja para hacer comparaciones.
     """
-    if not x_euler: # Si no hay nada que dibujar (porque hubo un error antes)
+    if not x_euler: # Verifica si hay datos para graficar
         print("No hay datos para dibujar.")
         return
 
-    # Saca un "lienzo" en blanco para dibujar.
+    # Crea una nueva figura (ventana) para la gráfica
     plt.figure(figsize=(10, 6))
     
-    # 1. Dibuja la solución de Euler (la aproximada)
-    # 'bo--' significa: 'b' (azul), 'o' (puntos), '--' (línea discontinua).
+    # 1. Dibuja los puntos calculados con el método de Euler
+    # 'bo--' significa: puntos azules (b=blue, o=circles) unidos con línea discontinua (--)
     plt.plot(x_euler, y_euler, 'bo--', label=f'Solución de Euler (h={h})')
     
-    # 2. Si hay una solución "real" (analítica), también la dibuja para comparar
+    # 2. Si el usuario proporcionó la solución exacta, también la dibujamos
     if g_func is not None:
-        # Crea muchos puntos entre x0 y x_final para que la curva se vea suave.
+        # Crea muchos puntos intermedios para que la curva se vea suave
         x_analitica = np.linspace(x0, x_final, 1000)
         try:
-            # Calcula la solución "real" para todos esos puntos.
+            # Calcula los valores de la solución exacta en todos esos puntos
             y_analitica = [g_func(x) for x in x_analitica]
-            # La dibuja con una línea roja continua.
+            # Dibuja la solución exacta como una línea roja continua
             plt.plot(x_analitica, y_analitica, 'r-', label='Solución analítica')
         except Exception as e:
             print(f"Error al dibujar la solución analítica: {e}")
     
-    # 3. Le pone títulos y etiquetas a la gráfica
+    # 3. Añade etiquetas y título para que la gráfica sea fácil de entender
     plt.xlabel('x')
     plt.ylabel('y')
     plt.title('Comparación: Método de Euler vs Solución Analítica')
-    plt.legend() # Muestra la "leyenda" (qué color es qué línea)
-    plt.grid(True) # Pone una "rejilla" para que sea más fácil leer los valores
+    plt.legend() # Muestra la leyenda explicando qué línea es qué
+    plt.grid(True) # Añade una cuadrícula para facilitar la lectura
     
     # 4. Muestra la gráfica en pantalla
     plt.show()
 
-# --- 6. La Función "Jefe" (Main) ---
+# --- 6. Función principal del programa ---
 
 def main():
     """
-    Esta es la función "jefe". Coordina a todas las demás funciones
-    para resolver el problema completo.
+    Función principal que coordina todo el programa.
+    Llama a las otras funciones en el orden correcto para resolver el problema completo.
     """
     try:
-        # 1. El "entrevistador" habla contigo y reúne los datos
+        # 1. Obtiene todos los datos del usuario
         f_func, g_func, x0, y0, h, x_final = get_user_input()
         
-        # 2. El "motor de cálculo" hace todo el trabajo pesado
+        # 2. Aplica el método de Euler para resolver la ecuación
         x_euler, y_euler = metodo_euler(f_func, x0, y0, h, x_final)
         
-        # 3. El "artista" dibuja los resultados
-        if x_euler:  # Solo si hay resultados que dibujar
+        # 3. Crea la gráfica con los resultados
+        if x_euler:  # Solo si se pudieron calcular resultados
             plot_results(x_euler, y_euler, g_func, x0, x_final, h)
         
-        # 4. Muestra un resumen final
+        # 4. Muestra un resumen con los resultados principales
         print("\n--- Resumen Final ---")
         print(f"Punto inicial: ({x0}, {y0})")
         print(f"Punto final calculado: ({x_euler[-1]:.4f}, {y_euler[-1]:.6f})" if x_euler else "No se pudo calcular")
@@ -228,7 +233,7 @@ def main():
         
         if g_func is not None and x_euler:
             try:
-                # Si hay solución "real", calcula qué tan cerca estuvimos
+                # Si hay solución exacta, calcula qué tan cerca estuvo nuestro resultado
                 y_real = g_func(x_euler[-1])
                 error = abs(y_euler[-1] - y_real)
                 print(f"Valor real en x_final: {y_real:.6f}")
@@ -237,17 +242,17 @@ def main():
                 print(f"No se pudo calcular el error: {e}")
         
     except KeyboardInterrupt:
-        # Si presionas Ctrl+C, el programa se detiene elegantemente
+        # Si el usuario presiona Ctrl+C para interrumpir el programa
         print("\n\nPrograma interrumpido por el usuario. ¡Hasta luego!")
     except Exception as e:
-        # Si algo sale muy mal, muestra el error en lugar de que el programa "explote"
+        # Si ocurre cualquier otro error inesperado, lo maneja de forma elegante
         print(f"\nOcurrió un error inesperado: {e}")
         print("Por favor, revisa tus datos e intenta de nuevo.")
 
-# --- 7. El "Punto de Inicio" ---
+# --- 7. Punto de inicio del programa ---
 
 if __name__ == "__main__":
-    # Esto significa: "Si alguien ejecuta este archivo directamente 
-    # (no lo está usando como una 'pieza' de otro programa), 
-    # entonces ejecuta la función main()."
+    # Esta línea verifica si el archivo se está ejecutando directamente
+    # (no siendo importado como parte de otro programa)
+    # Si es así, ejecuta la función principal
     main()
