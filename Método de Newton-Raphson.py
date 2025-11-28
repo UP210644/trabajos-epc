@@ -14,12 +14,24 @@ from tkinter import ttk, messagebox  # Elementos adicionales de la interfaz (bot
 class NewtonRaphsonCalculator:
     def __init__(self):
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
         self.root = tk.Tk()
         self.root.title("Método de Newton-Raphson")
         self.root.geometry("600x700")
         # Variable simbólica
         self.x = symbols('x')
         self.setup_ui()
+=======
+        """
+        Inicializa el programa creando la ventana principal y preparando las herramientas matemáticas.
+        """
+        self.root = tk.Tk()  # Crea la ventana principal
+        self.root.title("Método de Newton-Raphson")  # Le pone título a la ventana
+        self.root.geometry("600x700")  # Define el tamaño de la ventana
+        # Crea una variable simbólica 'x' que usaremos para las ecuaciones
+        self.x = symbols('x')
+        self.setup_ui()  # Llama a la función que creará todos los elementos visuales
+>>>>>>> Stashed changes
 =======
         """
         Inicializa el programa creando la ventana principal y preparando las herramientas matemáticas.
@@ -42,7 +54,11 @@ class NewtonRaphsonCalculator:
         main_frame.grid(row=0, column=0, sticky=(tk.W, tk.E, tk.N, tk.S))
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
         # Título
+=======
+        # Crea y coloca el título principal de la aplicación
+>>>>>>> Stashed changes
 =======
         # Crea y coloca el título principal de la aplicación
 >>>>>>> Stashed changes
@@ -51,7 +67,11 @@ class NewtonRaphsonCalculator:
         title_label.grid(row=0, column=0, columnspan=2, pady=(0, 20))
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
         # Descripción
+=======
+        # Texto explicativo sobre qué hace el método
+>>>>>>> Stashed changes
 =======
         # Texto explicativo sobre qué hace el método
 >>>>>>> Stashed changes
@@ -65,6 +85,10 @@ las raíces de una función real. Fórmula: xₙ₊₁ = xₙ - f(xₙ)/f'(xₙ)
             row=2, column=0, sticky=tk.W, pady=5)
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+=======
+        # Contenedor para el campo de la función
+>>>>>>> Stashed changes
 =======
         # Contenedor para el campo de la función
 >>>>>>> Stashed changes
@@ -78,7 +102,11 @@ las raíces de una función real. Fórmula: xₙ₊₁ = xₙ - f(xₙ)/f'(xₙ)
         self.func_entry.insert(0, "x**3 - 2*x - 5")  # Ejemplo por defecto
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
         # Ejemplos de funciones
+=======
+        # Ejemplos y ayudas para que el usuario sepa cómo escribir funciones
+>>>>>>> Stashed changes
 =======
         # Ejemplos y ayudas para que el usuario sepa cómo escribir funciones
 >>>>>>> Stashed changes
@@ -88,6 +116,10 @@ las raíces de una función real. Fórmula: xₙ₊₁ = xₙ - f(xₙ)/f'(xₙ)
         ]
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+=======
+        # Muestra los ejemplos de funciones en pantalla para ayudar al usuario
+>>>>>>> Stashed changes
 =======
         # Muestra los ejemplos de funciones en pantalla para ayudar al usuario
 >>>>>>> Stashed changes
@@ -96,6 +128,7 @@ las raíces de una función real. Fórmula: xₙ₊₁ = xₙ - f(xₙ)/f'(xₙ)
                                       font=("Arial", 9), foreground="gray")
             example_label.grid(row=4 + i, column=0, columnspan=2, sticky=tk.W, pady=2)
 
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
         # Parámetros
         params_frame = ttk.LabelFrame(main_frame, text="Parámetros", padding="10")
@@ -109,14 +142,27 @@ las raíces de una función real. Fórmula: xₙ₊₁ = xₙ - f(xₙ)/f'(xₙ)
 
         # Campo para el valor inicial (desde dónde empezamos a buscar la raíz)
 >>>>>>> Stashed changes
+=======
+        # Sección de parámetros del método (valores que controlan cómo funciona el algoritmo)
+        params_frame = ttk.LabelFrame(main_frame, text="Parámetros", padding="10")
+        params_frame.grid(row=6, column=0, columnspan=2, sticky=(tk.W, tk.E), pady=10)
+
+        # Campo para el valor inicial (desde dónde empezamos a buscar la raíz)
+>>>>>>> Stashed changes
         ttk.Label(params_frame, text="Valor inicial (x₀):").grid(
             row=0, column=0, sticky=tk.W, pady=5)
         self.x0_entry = ttk.Entry(params_frame, width=15)
         self.x0_entry.grid(row=0, column=1, sticky=tk.W, pady=5)
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
         self.x0_entry.insert(0, "2.0")
 
         # Tolerancia
+=======
+        self.x0_entry.insert(0, "2.0")  # Valor por defecto
+
+        # Campo para la tolerancia (qué tan preciso queremos el resultado)
+>>>>>>> Stashed changes
 =======
         self.x0_entry.insert(0, "2.0")  # Valor por defecto
 
@@ -134,6 +180,7 @@ las raíces de una función real. Fórmula: xₙ₊₁ = xₙ - f(xₙ)/f'(xₙ)
         self.max_iter_entry = ttk.Entry(params_frame, width=15)
         self.max_iter_entry.grid(row=2, column=1, sticky=tk.W, pady=5)
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
         self.max_iter_entry.insert(0, "100")
 
         # Botones
@@ -149,11 +196,24 @@ las raíces de una función real. Fórmula: xₙ₊₁ = xₙ - f(xₙ)/f'(xₙ)
 
         # Botón para calcular la raíz usando el método de Newton-Raphson
 >>>>>>> Stashed changes
+=======
+        self.max_iter_entry.insert(0, "100")  # Suficientes intentos por defecto
+
+        # Sección de botones principales del programa
+        button_frame = ttk.Frame(main_frame)
+        button_frame.grid(row=7, column=0, columnspan=2, pady=20)
+
+        # Botón para calcular la raíz usando el método de Newton-Raphson
+>>>>>>> Stashed changes
         calc_btn = ttk.Button(button_frame, text="Calcular Raíz",
                               command=self.calculate_root)
         calc_btn.grid(row=0, column=0, padx=10)
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+=======
+        # Botón para crear una gráfica de la función y el proceso de convergencia
+>>>>>>> Stashed changes
 =======
         # Botón para crear una gráfica de la función y el proceso de convergencia
 >>>>>>> Stashed changes
@@ -162,6 +222,10 @@ las raíces de una función real. Fórmula: xₙ₊₁ = xₙ - f(xₙ)/f'(xₙ)
         graph_btn.grid(row=0, column=1, padx=10)
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+=======
+        # Botón para limpiar todos los campos y empezar de nuevo
+>>>>>>> Stashed changes
 =======
         # Botón para limpiar todos los campos y empezar de nuevo
 >>>>>>> Stashed changes
@@ -174,8 +238,14 @@ las raíces de una función real. Fórmula: xₙ₊₁ = xₙ - f(xₙ)/f'(xₙ)
         results_frame.grid(row=8, column=0, columnspan=2, sticky=(tk.W, tk.E, tk.N, tk.S), pady=10)
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
         # Text widget para resultados
         self.results_text = tk.Text(results_frame, height=12, width=70)
+=======
+        # Campo de texto grande para mostrar tablas y resultados detallados
+        self.results_text = tk.Text(results_frame, height=12, width=70)
+        # Barra de desplazamiento por si los resultados son muy largos
+>>>>>>> Stashed changes
 =======
         # Campo de texto grande para mostrar tablas y resultados detallados
         self.results_text = tk.Text(results_frame, height=12, width=70)
@@ -186,10 +256,18 @@ las raíces de una función real. Fórmula: xₙ₊₁ = xₙ - f(xₙ)/f'(xₙ)
         self.results_text.configure(yscrollcommand=scrollbar.set)
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
         self.results_text.grid(row=0, column=0, sticky=(tk.W, tk.E, tk.N, tk.S))
         scrollbar.grid(row=0, column=1, sticky=(tk.N, tk.S))
 
         # Configurar grid weights
+=======
+        # Coloca el área de texto y la barra de desplazamiento en su posición
+        self.results_text.grid(row=0, column=0, sticky=(tk.W, tk.E, tk.N, tk.S))
+        scrollbar.grid(row=0, column=1, sticky=(tk.N, tk.S))
+
+        # Configuraciones para que los elementos se redimensionen correctamente con la ventana
+>>>>>>> Stashed changes
 =======
         # Coloca el área de texto y la barra de desplazamiento en su posición
         self.results_text.grid(row=0, column=0, sticky=(tk.W, tk.E, tk.N, tk.S))
@@ -207,6 +285,7 @@ las raíces de una función real. Fórmula: xₙ₊₁ = xₙ - f(xₙ)/f'(xₙ)
         results_frame.rowconfigure(0, weight=1)
 
     def parse_function(self, func_str):
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
         """Convierte string de función a función evaluable"""
         try:
@@ -279,6 +358,47 @@ las raíces de una función real. Fórmula: xₙ₊₁ = xₙ - f(xₙ)/f'(xₙ)
 
             # Guardamos toda la información de esta iteración
 >>>>>>> Stashed changes
+=======
+        """
+        Convierte un texto como "x**2 + 3*x - 5" en funciones matemáticas que la computadora puede usar.
+        También calcula automáticamente la derivada que necesita el método de Newton-Raphson.
+        """
+        try:
+            # Reemplaza ^ por ** porque Python usa ** para potencias
+            func_str = func_str.replace('^', '**')
+            # Convierte el texto en una expresión matemática simbólica
+            expr = sp.sympify(func_str)
+            # Crea funciones numéricas que pueden calcular valores rápidamente
+            f = lambdify(self.x, expr, modules=['numpy'])  # La función original
+            f_prime = lambdify(self.x, diff(expr, self.x), modules=['numpy'])  # Su derivada
+            return f, f_prime, expr
+        except Exception as e:
+            # Si el texto no se puede convertir, muestra un error explicativo
+            raise ValueError(f"Error en la función: {str(e)}")
+
+    def newton_raphson(self, f, f_prime, x0, tol=1e-6, max_iter=100):
+        """
+        Implementa el algoritmo de Newton-Raphson para encontrar raíces de funciones.
+        El método funciona dibujando líneas tangentes y siguiendo donde tocan el eje x.
+        Repite este proceso hasta encontrar una aproximación muy precisa de la raíz.
+        """
+        iterations = []  # Lista para guardar el progreso de cada paso
+        x = x0  # Empezamos desde el valor inicial que el usuario proporcionó
+
+        for i in range(max_iter):  # Repetimos hasta el máximo de iteraciones permitidas
+            fx = float(f(x))    # Calculamos f(x) en el punto actual
+            fpx = float(f_prime(x))  # Calculamos f'(x) (la pendiente) en el punto actual
+
+            # Verificamos que la derivada no sea cero (evita divisiones problemáticas)
+            if abs(fpx) < 1e-12:
+                raise ValueError("Derivada cercana a cero. El método puede no converger.")
+
+            # Aplicamos la fórmula de Newton-Raphson: x_nuevo = x_actual - f(x)/f'(x)
+            x_new = x - fx / fpx
+            error = abs(x_new - x)  # Calculamos qué tanto cambió el resultado
+
+            # Guardamos toda la información de esta iteración
+>>>>>>> Stashed changes
             iterations.append({
                 'iter': i + 1,
                 'x': x,
@@ -288,6 +408,7 @@ las raíces de una función real. Fórmula: xₙ₊₁ = xₙ - f(xₙ)/f'(xₙ)
                 'error': error
             })
 
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
             # Verificar convergencia
             if error < tol:
@@ -308,6 +429,17 @@ las raíces de una función real. Fórmula: xₙ₊₁ = xₙ - f(xₙ)/f'(xₙ)
         return x, iterations
 
 =======
+>>>>>>> Stashed changes
+=======
+            # Verificamos si ya encontramos una solución suficientemente precisa
+            if error < tol:
+                x = x_new
+                break  # Salimos del bucle porque ya tenemos la respuesta
+
+            x = x_new  # Preparamos la siguiente iteración
+
+        return x, iterations  # Devolvemos la raíz encontrada y todo el proceso
+
 >>>>>>> Stashed changes
     def calculate_root(self):
         """
@@ -387,6 +519,7 @@ las raíces de una función real. Fórmula: xₙ₊₁ = xₙ - f(xₙ)/f'(xₙ)
             func_str = self.func_entry.get()
             x0 = float(self.x0_entry.get())
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
             tol = float(self.tol_entry.get())
             max_iter = int(self.max_iter_entry.get())
 
@@ -464,6 +597,8 @@ las raíces de una función real. Fórmula: xₙ₊₁ = xₙ - f(xₙ)/f'(xₙ)
             ax1.axvline(x=raiz, color='r', linestyle='--', alpha=0.7, label=f'Raíz: {raiz:.6f}')
             ax1.plot(raiz, float(f(raiz)), 'ro', markersize=8, label='Raíz encontrada')
 =======
+=======
+>>>>>>> Stashed changes
 
             # Convierte la función de texto a funciones matemáticas
             f, f_prime, expr = self.parse_function(func_str)
@@ -482,11 +617,15 @@ las raíces de una función real. Fórmula: xₙ₊₁ = xₙ - f(xₙ)/f'(xₙ)
             ax1.axhline(y=0, color='k', linestyle='--', alpha=0.3)  # Línea horizontal en y=0
             ax1.axvline(x=raiz, color='r', linestyle='--', alpha=0.7, label=f'Raíz: {raiz:.6f}')  # Línea vertical en la raíz
             ax1.plot(raiz, float(f(raiz)), 'ro', markersize=8, label='Raíz encontrada')  # Punto donde está la raíz
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
             ax1.set_xlabel('x')
             ax1.set_ylabel('f(x)')
             ax1.set_title('Función y Raíz Encontrada')
             ax1.legend()
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
             ax1.grid(True, alpha=0.3)
 
@@ -496,6 +635,8 @@ las raíces de una función real. Fórmula: xₙ₊₁ = xₙ - f(xₙ)/f'(xₙ)
 
             if errores:
 =======
+=======
+>>>>>>> Stashed changes
             ax1.grid(True, alpha=0.3)  # Rejilla para facilitar la lectura
 
             # SEGUNDO GRÁFICO: Cómo va disminuyendo el error en cada iteración
@@ -504,6 +645,9 @@ las raíces de una función real. Fórmula: xₙ₊₁ = xₙ - f(xₙ)/f'(xₙ)
 
             if errores:
                 # Usa escala logarítmica para ver mejor cómo disminuye el error
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
                 ax2.semilogy(iter_nums, errores, 'go-', linewidth=2, markersize=6)
             ax2.set_xlabel('Iteración')
@@ -511,6 +655,7 @@ las raíces de una función real. Fórmula: xₙ₊₁ = xₙ - f(xₙ)/f'(xₙ)
             ax2.set_title('Convergencia del Error')
             ax2.grid(True, alpha=0.3)
 
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
             plt.tight_layout()
             plt.show()
@@ -523,6 +668,8 @@ las raíces de una función real. Fórmula: xₙ₊₁ = xₙ - f(xₙ)/f'(xₙ)
         self.func_entry.delete(0, tk.END)
         self.func_entry.insert(0, "x**3 - 2*x - 5")
 =======
+=======
+>>>>>>> Stashed changes
             plt.tight_layout()  # Ajusta automáticamente el espaciado
             plt.show()  # Muestra las gráficas en pantalla
 
@@ -540,6 +687,9 @@ las raíces de una función real. Fórmula: xₙ₊₁ = xₙ - f(xₙ)/f'(xₙ)
         self.func_entry.insert(0, "x**3 - 2*x - 5")
         
         # Restaura los parámetros a valores estándar
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
         self.x0_entry.delete(0, tk.END)
         self.x0_entry.insert(0, "2.0")
@@ -547,6 +697,7 @@ las raíces de una función real. Fórmula: xₙ₊₁ = xₙ - f(xₙ)/f'(xₙ)
         self.tol_entry.insert(0, "1e-6")
         self.max_iter_entry.delete(0, tk.END)
         self.max_iter_entry.insert(0, "100")
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
         self.results_text.delete(1.0, tk.END)
 
@@ -573,6 +724,8 @@ def ejemplo_newton_raphson():
     max_iter = 100
 
 =======
+=======
+>>>>>>> Stashed changes
         
         # Limpia el área de resultados
         self.results_text.delete(1.0, tk.END)
@@ -611,6 +764,9 @@ def ejemplo_newton_raphson():
     max_iter = 100  # Máximo número de intentos
 
     # Muestra la información inicial
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
     print(f"Función: f(x) = x³ - 2x - 5")
     print(f"Derivada: f'(x) = 3x² - 2")
@@ -620,7 +776,11 @@ def ejemplo_newton_raphson():
     print("\nIteraciones:")
     print("-" * 70)
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     # Cabecera corregida para evitar comillas internas
+=======
+    # Encabezado de la tabla con explicación de cada columna
+>>>>>>> Stashed changes
 =======
     # Encabezado de la tabla con explicación de cada columna
 >>>>>>> Stashed changes
@@ -628,6 +788,7 @@ def ejemplo_newton_raphson():
         'Iter', 'xₙ', 'f(xₙ)', "f'(xₙ)", 'xₙ₊₁', 'Error'))
     print("-" * 70)
 
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
     x = x0
     for i in range(max_iter):
@@ -644,6 +805,8 @@ def ejemplo_newton_raphson():
         x = x_new
 
 =======
+=======
+>>>>>>> Stashed changes
     # Aplicamos el método de Newton-Raphson paso a paso
     x = x0  # Empezamos desde el valor inicial
     for i in range(max_iter):
@@ -662,6 +825,9 @@ def ejemplo_newton_raphson():
         x = x_new  # Preparamos para la siguiente iteración
 
     # Mostramos el resumen final
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
     print("-" * 70)
     print(f"\nRaíz encontrada: x = {x_new:.8f}")
@@ -670,6 +836,7 @@ def ejemplo_newton_raphson():
 
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 if __name__ == "__main__":
     
     print("Método de Newton-Raphson")
@@ -677,6 +844,8 @@ if __name__ == "__main__":
 
     # Ejecutar ejemplo básico
 =======
+=======
+>>>>>>> Stashed changes
 # ===== PUNTO DE INICIO DEL PROGRAMA =====
 if __name__ == "__main__":
     # Esta sección se ejecuta cuando el archivo se corre directamente
@@ -690,6 +859,9 @@ if __name__ == "__main__":
     print("=" * 30)
 
     # Primero ejecuta el ejemplo simple para mostrar cómo funciona el método
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
     ejemplo_newton_raphson()
 
@@ -697,7 +869,11 @@ if __name__ == "__main__":
     print("Iniciando interfaz gráfica...")
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     # Ejecutar interfaz gráfica
+=======
+    # Después inicia la interfaz gráfica completa para uso interactivo
+>>>>>>> Stashed changes
 =======
     # Después inicia la interfaz gráfica completa para uso interactivo
 >>>>>>> Stashed changes
