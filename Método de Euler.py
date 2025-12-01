@@ -17,6 +17,7 @@ ALLOWED_FUNCTIONS = {
 }
 ALLOWED_FUNCTIONS['abs'] = abs  # Añadimos la función de valor absoluto
 ALLOWED_FUNCTIONS['pow'] = pow  # Añadimos la función de potencias
+ALLOWED_FUNCTIONS['math'] = math  # Añadimos el módulo math completo para usar math.sin(), math.cos(), etc.
 
 def create_function(expr_str, var_names):
     """
@@ -32,8 +33,8 @@ def create_function(expr_str, var_names):
         # - Solo permitimos las operaciones matemáticas de nuestra lista segura
         func = eval(
             f"lambda {','.join(var_names)}: {expr_str}",
-            {"__builtins__": {}},
-            ALLOWED_FUNCTIONS
+            ALLOWED_FUNCTIONS,  # Namespace global con funciones matemáticas
+            {"__builtins__": {}}  # Namespace local vacío para seguridad
         )
         
         # Probamos la función con números sencillos para verificar que funciona
