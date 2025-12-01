@@ -151,7 +151,7 @@ def get_user_input():
 
     # 1. Entrada de Ecuación
     while True:
-        eq_str = input("\nIntroduce dy/dx = f(x,y): ")
+        eq_str = input("\nIntroduce la EDO dy/dx = f(x, y): ")
         try:
             test_f = parse_math_function(eq_str)
             test_f(1.0, 1.0) 
@@ -162,17 +162,17 @@ def get_user_input():
 
     # 2. Parámetros
     try:
-        x0 = float(input("x0 inicial: "))
-        y0 = float(input("y0 inicial: "))
-        h = float(input("Tamaño del paso (h): "))
-        x_end = float(input("x final: "))
+        x0 = float(input("Introduce el valor inicial x0:      "))
+        y0 = float(input("Introduce el valor inicial y0 (y(x0)): "))
+        h = float(input("Introduce el tamaño de paso (h):     "))
+        x_end = float(input("Introduce el valor final de x:       "))
     except ValueError:
         print("\n¡Error! Introduce solo números válidos.")
         return
 
     # 3. Solución Exacta (Opcional)
     exact_f = None
-    has_exact = input("\n¿Conoces la solución exacta para comparar? (s/n): ").lower().strip()
+    has_exact = input("\n¿Tienes la solución 'real' (analítica) para comparar? (s/n): ").lower().strip()
     if has_exact == 's':
         while True:
             exact_str = input("Introduce y(x) = : ")
