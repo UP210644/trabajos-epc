@@ -21,7 +21,6 @@ class NewtonRaphsonCalculator:
         self.root.geometry("600x700")  # Define el tamaño de la ventana
         # Crea una variable simbólica 'x' que usaremos para las ecuaciones
         self.x = symbols('x')
-        self.x = symbols('t')
         self.setup_ui()  # Llama a la función que creará todos los elementos visuales
 
     def setup_ui(self):
